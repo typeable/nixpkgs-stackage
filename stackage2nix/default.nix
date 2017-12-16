@@ -2,8 +2,8 @@
 
 with nixpkgs;
 let
-  lib = callPackage ../lib.nix {};
-  haskellPackages = import ../haskellPackages { inherit nixpkgs; };
+  lib = callPackage ./lib.nix {};
+  haskellPackages = import ./haskell-packages-private { inherit nixpkgs; };
   stackage2nix = haskell.lib.disableSharedExecutables haskellPackages.stackage2nix;
 in stdenv.mkDerivation rec {
   name = "stackage2nix-${version}";
