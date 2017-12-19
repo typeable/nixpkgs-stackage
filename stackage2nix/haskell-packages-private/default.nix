@@ -8,7 +8,7 @@ let
   stackageConfig = callPackage ./configuration-packages.nix {};
   stackPackages =
     { pkgs, stdenv, callPackage }:
-    
+
     self: {
       "Cabal" = callPackage
         ({ mkDerivation, array, base, binary, bytestring, containers
@@ -130,7 +130,11 @@ let
          mkDerivation {
            pname = "stackage2nix";
            version = "0.3.0";
-           src = ../../.;
+           src = fetchgit {
+             url = "https://github.com/typeable/stackage2nix.git";
+             rev = "313ed5191d3f7a53c78f8c657a5cfbb8ea0b706d";
+             sha256 = "09205wnlkxk0abl1afrc7rlg27fvj5x0307cc9klp2nmi7v6knn3";
+           };
            isLibrary = true;
            isExecutable = true;
            libraryHaskellDepends = [
@@ -151,12 +155,12 @@ let
            license = stdenv.lib.licenses.bsd3;
          }) {};
     };
-  
+
   pkgOverrides = self: stackPackages {
     inherit pkgs stdenv;
     inherit (self) callPackage;
   };
-  
+
 in callPackage (nixpkgs.path + "/pkgs/development/haskell-modules") {
   ghc = pkgs.haskell.compiler.ghc802;
   compilerConfig = self: extends pkgOverrides (extends stackageConfig (stackagePackages self));
