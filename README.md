@@ -13,6 +13,12 @@ Symlink the current `./haskell-overlay.nix` into the `~/.config/nixpkgs/overlays
 
 ## Haskell overlay
 
+List LTS packages:
+
+```
+nix-env -f '<nixpkgs>' -qaP -A haskell.packages.stackage.lts-100
+```
+
 Install stackage2nix:
 
 ```

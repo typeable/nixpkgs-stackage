@@ -13,24 +13,37 @@ in pkgs.stdenv.mkDerivation rec {
     exit 1
   '';
 
-  updateScriptSh = ''
+  updateLtsSh = ''
     pushd stackage
     # iterate throuch stackage-lts configs
     for conf in ${lib.stackage-lts}/*.yaml; do
       resolver=$(basename --suffix='.yaml' $conf)
-      if [ $resolver = 'lts-9.1' ] && [ ! -d $resolver ]; then
+      if [ $resolver = 'lts-10.0' ] && [ ! -d $resolver ]; then
         mkdir $resolver
         pushd $resolver
-        (set -x; ${pkgs.stackage2nix}/bin/stackage2nix --resolver $resolver)
+        (set -x; time ${pkgs.stackage2nix}/bin/stackage2nix --resolver $resolver)
         popd
       fi
     done
     popd # stackage
   '';
 
+  updateStackageSh = ''
+    pushd stackage
+    echo 'self:' > default.nix
+    echo '{' >> default.nix
+    for dir in $(find . -mindepth 1 -type d | sort); do
+      resolver=$(basename $dir)
+      echo "  ''${resolver//.} = import $dir {};" >> default.nix
+    done
+    echo '}' >> default.nix
+    popd # stackage
+  '';
+
   shellHook = ''
     echo "Running ${name}"
-    ${updateScriptSh}
+    ${updateLtsSh}
+    ${updateStackageSh}
     EXIT_CODE=$?
     if [ "$EXIT_CODE" != "0" ]; then
       echo 'ERROR: update-script'

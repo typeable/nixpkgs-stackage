@@ -3,7 +3,7 @@ self: super:
 {
   haskell = super.haskell // {
     packages = super.haskell.packages // {
-      stackage = import ./stackage {};
+      stackage = import ./stackage { inherit self; };
     };
   };
 
