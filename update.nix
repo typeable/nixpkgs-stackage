@@ -1,7 +1,6 @@
 { nixpkgs ? import <nixpkgs> {} }:
 
 let
-  # TODO define pkgsTypeable
   pkgs = import ./default.nix { inherit nixpkgs; };
   lib = pkgs.callPackage ./stackage2nix/lib.nix {};
   # updateScript = pkgs.callPackage ./update-stackage/update.nix { inherit (lib) stackage-lts; };
@@ -15,10 +14,10 @@ in pkgs.stdenv.mkDerivation rec {
 
   updateLtsSh = ''
     pushd stackage
-    # iterate throuch stackage-lts configs
+    # iterate through stackage-lts configs
     for conf in ${lib.stackage-lts}/*.yaml; do
       resolver=$(basename --suffix='.yaml' $conf)
-      if [ $resolver = 'lts-9.0' ] && [ ! -d $resolver ]; then
+      if [ ! -d $resolver ]; then
         mkdir $resolver
         pushd $resolver
         (set -x; time ${pkgs.stackage2nix}/bin/stackage2nix --resolver $resolver)
@@ -30,26 +29,28 @@ in pkgs.stdenv.mkDerivation rec {
 
   updateStackageSh = ''
     pushd stackage
-    echo 'self:' > default.nix
+    echo '{ callPackage }:' > default.nix
     echo '{' >> default.nix
     for dir in $(find . -mindepth 1 -type d | sort); do
       resolver=$(basename $dir)
-      echo "  ''${resolver//.} = import $dir {};" >> default.nix
+      echo "  ''${resolver//.} = callPackage $dir {};" >> default.nix
     done
     echo '}' >> default.nix
     popd # stackage
   '';
 
   shellHook = ''
-    echo "Running ${name}"
+    echo 'Start ${name}'
+    echo 'Start update-lts-sh'
     ${updateLtsSh}
+    echo 'Start update-stackage-sh'
     ${updateStackageSh}
     EXIT_CODE=$?
     if [ "$EXIT_CODE" != "0" ]; then
       echo 'ERROR: update-script'
       exit $EXIT_CODE
     fi
-    echo 'OK: update-script'
+    echo 'OK: ${name}'
     exit 0
   '';
 }
