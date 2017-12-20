@@ -18,7 +18,7 @@ in pkgs.stdenv.mkDerivation rec {
     # iterate throuch stackage-lts configs
     for conf in ${lib.stackage-lts}/*.yaml; do
       resolver=$(basename --suffix='.yaml' $conf)
-      if [ $resolver = 'lts-10.0' ] && [ ! -d $resolver ]; then
+      if [ $resolver = 'lts-9.0' ] && [ ! -d $resolver ]; then
         mkdir $resolver
         pushd $resolver
         (set -x; time ${pkgs.stackage2nix}/bin/stackage2nix --resolver $resolver)
