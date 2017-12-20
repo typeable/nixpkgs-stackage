@@ -1,10 +1,11 @@
-{ nixpkgs ? import <nixpkgs> {} }:
+{ nixpkgs ? import ../default.nix {} }:
 
 with nixpkgs;
 let
   lib = callPackage ./lib.nix {};
-  haskellPackages = import ./haskell-packages-private { inherit nixpkgs; };
-  stackage2nix = haskell.lib.disableSharedExecutables haskellPackages.stackage2nix;
+  haskellPackages = haskell.packages.stackage.lts-100;
+  stackage2nix = haskell.lib.disableSharedExecutables
+    (haskellPackages.callPackage ./stackage2nix.nix {});
 in stdenv.mkDerivation rec {
   name = "stackage2nix-${version}";
   version = stackage2nix.version;
