@@ -7,5 +7,5 @@ self: super:
     };
   };
 
-  stackage2nix = import ./stackage2nix { nixpkgs = self; };
+  stackage2nix = import ./stackage2nix { nixpkgs = super; };
 }
