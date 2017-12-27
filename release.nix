@@ -19,8 +19,11 @@ let
       (_: pkg: hasSupportedSystem system pkg)
       (release.pkgsFor system).haskell.packages.stackage."${lts}";
 
+  genJobSet1 = lts: system:
+    (release.pkgsFor system).haskell.packages.stackage."${lts}";
+
 in
   lib.genAttrs supportedStackageReleases (stackage:
     lib.genAttrs supportedSystems (system:
-      genJobSet stackage system
+      genJobSet1 stackage system
   ))
