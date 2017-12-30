@@ -32,10 +32,10 @@ $ nix-env -i stackage2nix
 
 ## Update script
 
-Update script will add missing lts releases to `stackage` directory
+Update script will add missing lts releases to `stackage` directory:
 
 ```
-nix-shell update.nix --pure
+./update.sh
 ```
 
 [stackage2nix]: https://github.com/typeable/stackage2nix
