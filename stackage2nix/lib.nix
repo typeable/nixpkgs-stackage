@@ -1,10 +1,10 @@
 { stdenv, cacert, git, curl
-, _cacheVersion ? "0" }:
+, cacheVersion ? "0" }:
 
 {
   hackage-db = stdenv.mkDerivation {
     name = "hackage-db";
-    version = _cacheVersion;
+    version = cacheVersion;
     phases = [ "installPhase" ];
     buildInputs = [ curl ];
     installPhase = ''
@@ -18,7 +18,7 @@
   };
   all-cabal-hashes = stdenv.mkDerivation rec {
     name = "all-cabal-hashes";
-    version = _cacheVersion;
+    version = cacheVersion;
     phases = [ "installPhase" ];
     buildInputs = [ git ];
     installPhase = ''
@@ -29,7 +29,7 @@
   };
   stackage-lts = stdenv.mkDerivation {
     name = "stackage-lts";
-    version = _cacheVersion;
+    version = cacheVersion;
     phases = [ "installPhase" ];
     buildInputs = [ git ];
     installPhase = ''

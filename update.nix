@@ -1,9 +1,9 @@
-{ nixpkgs ? import <nixpkgs> {} }:
+{ nixpkgs ? import <nixpkgs> {}
+, cacheVersion ? "0" }:
 
 let
   pkgs = import ./default.nix { inherit nixpkgs; };
-  lib = pkgs.callPackage ./stackage2nix/lib.nix {};
-  # updateScript = pkgs.callPackage ./update-stackage/update.nix { inherit (lib) stackage-lts; };
+  lib = pkgs.callPackage ./stackage2nix/lib.nix { inherit cacheVersion; };
 in pkgs.stdenv.mkDerivation rec {
   name = "nixpkgs-typeable-update-script";
 
@@ -31,12 +31,12 @@ in pkgs.stdenv.mkDerivation rec {
     pushd stackage
     echo '{ callPackage }:' > default.nix
     echo '{' >> default.nix
-    for dir in $(find . -mindepth 1 -type d | sort); do
+    for dir in $(find . -mindepth 1 -type d | sort --version-sort); do
       resolver=$(basename $dir)
       echo "  ''${resolver//.} = callPackage $dir {};" >> default.nix
     done
     echo '}' >> default.nix
-    popd # stackage
+    popd
   '';
 
   shellHook = ''
