@@ -7,5 +7,8 @@ self: super:
     };
   };
 
-  stackage2nix = import ./stackage2nix { nixpkgs = self; };
+  stackage2nix = import ./stackage2nix {
+    nixpkgs = self;
+    cacheVersion = builtins.readFile ./cacheVersion.txt;
+  };
 }

@@ -1,8 +1,9 @@
-{ nixpkgs ? import ../default.nix {} }:
+{ nixpkgs ? import ../default.nix {}
+, cacheVersion }:
 
 with nixpkgs;
 let
-  lib = callPackage ./lib.nix {};
+  lib = callPackage ./lib.nix { inherit cacheVersion; };
   haskellPackages = haskell.packages.stackage.lts-100;
   stackage2nix = haskell.lib.disableSharedExecutables
     (haskellPackages.callPackage ./stackage2nix.nix {});
