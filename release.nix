@@ -1,5 +1,5 @@
 { supportedSystems ? [ "x86_64-linux" "i686-linux" ]
-, supportedStackageReleases ? [ "lts-100" ]
+, supportedStackageReleases ? [ "lts-100" "lts-101" ]
 , inHydra ? true }:
 
 let
