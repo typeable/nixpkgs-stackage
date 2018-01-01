@@ -1,11 +1,10 @@
 #!/bin/sh
-
-LTS=$1
-shift
+#
+# Usage:
+# test.sh -A lts-100.x86_64-linux --dry-run
 
 set -x
 NIXPKGS_ALLOW_BROKEN=1 exec nix-build release.nix \
-  --arg supportedStackageReleases "[\"$LTS\"]" \
+  --option use-binary-caches false \
   --arg inHydra false \
-  -A $LTS.x86_64-linux \
   $@
