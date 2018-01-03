@@ -1,12 +1,8 @@
-{ nixpkgs ? import ../default.nix {}
-, cacheVersion }:
+{ callPackage, makeWrapper, stdenv, nix, nix-prefetch-scripts
+, stackage2nix, cacheVersion }:
 
-with nixpkgs;
 let
   lib = callPackage ./lib.nix { inherit cacheVersion; };
-  haskellPackages = haskell.packages.stackage.lts-100;
-  stackage2nix = haskell.lib.disableSharedExecutables
-    (haskellPackages.callPackage ./stackage2nix.nix {});
 in stdenv.mkDerivation rec {
   name = "stackage2nix-${version}";
   version = stackage2nix.version;
