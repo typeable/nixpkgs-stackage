@@ -20,8 +20,11 @@ in pkgs.stdenv.mkDerivation rec {
       if [ ! -d $resolver ]; then
         mkdir $resolver
         pushd $resolver
+        # generate stackage release
         (set -x; time ${pkgs.stackage2nix}/bin/stackage2nix --resolver $resolver)
+        # update supported releases
         popd
+        echo "''${resolver//.}" >> ../supported-stackage-releases.txt
       fi
     done
     popd # stackage

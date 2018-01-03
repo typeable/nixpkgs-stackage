@@ -7,9 +7,10 @@ let
   supportedStackageReleases =
     if supportedReleases == null
     then
-      builtins.filter (x: x != "")
-        (lib.splitString "\n"
-          (builtins.readFile ./supported-stackage-releases.txt))
+      lib.unique
+        (builtins.filter (x: x != "")
+          (lib.splitString "\n"
+            (builtins.readFile ./supported-stackage-releases.txt)))
     else
       supportedReleases;
   release = import <nixpkgs/pkgs/top-level/release-lib.nix> {

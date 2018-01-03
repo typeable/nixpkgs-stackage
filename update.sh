@@ -8,5 +8,5 @@
 # - updates `stackage/default.nix` index
 
 DATE=$(date --iso-8601)
-echo $DATE > cacheVersion.txt
+echo $DATE > cache-version.txt
 exec nix-shell update.nix --argstr cacheVersion "$DATE"

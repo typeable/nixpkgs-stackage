@@ -9,6 +9,6 @@ self: super:
 
   stackage2nix = import ./stackage2nix {
     nixpkgs = self;
-    cacheVersion = builtins.readFile ./cacheVersion.txt;
+    cacheVersion = builtins.readFile ./cache-version.txt;
   };
 }
