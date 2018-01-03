@@ -13,7 +13,7 @@ Symlink the current `./haskell-overlay.nix` into the `~/.config/nixpkgs/overlays
 
 ```
 cd ~/.config/nixpkgs/overlays
-ln -s /path/to/haskell-overlay.nix typeable-overlay.nix
+ln -s /path/to/haskell-overlay.nix stackage-overlay.nix
 ```
 
 ## Haskell overlay
