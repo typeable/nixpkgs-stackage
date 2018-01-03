@@ -1,9 +1,17 @@
 { supportedSystems ? [ "x86_64-linux" "i686-linux" ]
-, supportedStackageReleases ? [ "lts-100" "lts-101" ]
+, supportedReleases ? null
 , inHydra ? true }:
 
 let
   lib = (import <nixpkgs> {}).lib;
+  supportedStackageReleases =
+    if supportedReleases == null
+    then
+      builtins.filter (x: x != "")
+        (lib.splitString "\n"
+          (builtins.readFile ./supported-stackage-releases.txt))
+    else
+      supportedReleases;
   release = import <nixpkgs/pkgs/top-level/release-lib.nix> {
     inherit supportedSystems;
     nixpkgsArgs = { overlays = [ (import ./haskell-overlay.nix) ]; };
