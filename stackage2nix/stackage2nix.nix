@@ -7,11 +7,11 @@
 }:
 mkDerivation {
   pname = "stackage2nix";
-  version = "0.4.0";
+  version = "0.5.0";
   src = fetchgit {
    url = "https://github.com/typeable/stackage2nix.git";
-   rev = "34731adba9da7c2496a2bae3c427ef6eedf6940d";
-   sha256 = "1wfs6cma50bvjx7ci6wdrq88br3019fz4myfsdxg04sngndqa61p";
+   rev = "884ca5b6be6880f6ee7453f7d8d4df3ca1060cb1";
+   sha256 = "1gcln8gmhi2gar5zqngff5hkkmx7005qg2h2nk34457whd6kxdzg";
   };
   isLibrary = true;
   isExecutable = true;
@@ -26,7 +26,7 @@ mkDerivation {
   testHaskellDepends = [
     base bytestring Cabal hspec pretty shakespeare text yaml
   ];
-  homepage = "https://github.com/4e6/stackage2nix#readme";
+  homepage = "https://github.com/typeable/stackage2nix#readme";
   description = "Convert Stack files into Nix build instructions";
   license = stdenv.lib.licenses.bsd3;
 }
