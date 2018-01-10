@@ -9,11 +9,11 @@ Nixpgs overlay
 
 ## Install
 
-Symlink the current `./haskell-overlay.nix` into the `~/.config/nixpkgs/overlays` folder.
+Symlink the current `./default.nix` into the `~/.config/nixpkgs/overlays` folder.
 
 ```
 cd ~/.config/nixpkgs/overlays
-ln -s /path/to/haskell-overlay.nix stackage-overlay.nix
+ln -s /path/to/default.nix stackage-overlay.nix
 ```
 
 ## Haskell overlay

@@ -4,6 +4,13 @@
 
 let
   lib = (import <nixpkgs> {}).lib;
+
+  release = import <nixpkgs/pkgs/top-level/release-lib.nix> {
+    inherit supportedSystems;
+    nixpkgsArgs = { overlays = [ (import ./default.nix) ]; };
+  };
+
+  # supportedStackageReleases :: [StackageVersion]
   supportedStackageReleases =
     if supportedReleases == null
     then
@@ -13,31 +20,27 @@ let
             (builtins.readFile ./supported-stackage-releases.txt)))
     else
       supportedReleases;
-  release = import <nixpkgs/pkgs/top-level/release-lib.nix> {
-    inherit supportedSystems;
-    nixpkgsArgs = { overlays = [ (import ./haskell-overlay.nix) ]; };
-  };
 
   # hasSupportedSystem :: System -> Derivation -> Bool
   hasSupportedSystem = system: pkg:
     # Test `isAttrs pkg` to ensure that pkg is a derivation
     lib.isAttrs pkg && lib.elem system pkg.meta.platforms;
 
-  # genJobSetFiltered :: StackageRelease -> System -> AttrSet
-  genJobSetFiltered = lts: system:
+  # genJobSetFiltered :: System -> StackageVersion -> AttrSet
+  genJobSetFiltered = system: stackage:
     lib.filterAttrs
       (_: pkg: hasSupportedSystem system pkg)
-      (release.pkgsFor system).haskell.packages.stackage."${lts}";
+      (release.pkgsFor system).haskell.packages.stackage."${stackage}";
 
-  # genJobSetFull :: StackageRelease -> System -> AttrSet
-  genJobSetFull = lts: system:
-    (release.pkgsFor system).haskell.packages.stackage."${lts}";
+  # genJobSetFull :: System -> StackageVersion -> AttrSet
+  genJobSetFull = system: stackage:
+    (release.pkgsFor system).haskell.packages.stackage."${stackage}";
 
   # genJobSet :: StackageRelease -> System -> AttrSet
   genJobSet = if inHydra then genJobSetFull else genJobSetFiltered;
 
 in
-  lib.genAttrs supportedStackageReleases (stackage:
-    lib.genAttrs supportedSystems (system:
-      genJobSet stackage system
+  lib.genAttrs supportedSystems (system:
+    lib.genAttrs supportedStackageReleases (stackage:
+      genJobSet system stackage
   ))
