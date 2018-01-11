@@ -15,9 +15,10 @@ let
     if supportedReleases == null
     then
       lib.unique
-        (builtins.filter (x: x != "")
-          (lib.splitString "\n"
-            (builtins.readFile ./supported-stackage-releases.txt)))
+        (map (builtins.replaceStrings ["."] [""])
+          (builtins.filter (x: x != "")
+            (lib.splitString "\n"
+              (builtins.readFile ./supported-stackage-releases.txt))))
     else
       supportedReleases;
 

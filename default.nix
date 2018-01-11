@@ -12,7 +12,9 @@ let
 in {
   haskell = super.haskell // {
     packages = super.haskell.packages // {
-      stackage = super.callPackage ./stackage {};
+      stackage = super.callPackage ./stackage {} // {
+        lib = super.callPackage ./stackage2nix/lib.nix {};
+      };
     };
   };
 

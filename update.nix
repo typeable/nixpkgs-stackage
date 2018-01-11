@@ -1,10 +1,9 @@
-{ nixpkgs ? import <nixpkgs> {}
+{ nixpkgs ? import ./nixpkgs.nix {}
 , cacheVersion ? "0" }:
 
-let
-  pkgs = import ./default.nix { inherit nixpkgs; };
-  lib = pkgs.callPackage ./stackage2nix/lib.nix { inherit cacheVersion; };
-in pkgs.stdenv.mkDerivation rec {
+with nixpkgs; let
+  lib = haskell.packages.stackage.lib.override { inherit cacheVersion; };
+in stdenv.mkDerivation rec {
   name = "nixpkgs-typeable-update-script";
 
   buildCommand = ''
@@ -12,24 +11,28 @@ in pkgs.stdenv.mkDerivation rec {
     exit 1
   '';
 
+  # generate missing stackage/lts-xx packages
   updateLtsSh = ''
     pushd stackage
     # iterate through stackage-lts configs
-    for conf in ${lib.stackage-lts}/*.yaml; do
+    for conf in $(find ${lib.stackage-lts} -type f -name '*.yaml' | sort --version-sort); do
       resolver=$(basename --suffix='.yaml' $conf)
       if [ ! -d $resolver ]; then
         mkdir $resolver
         pushd $resolver
         # generate stackage release
-        (set -x; time ${pkgs.stackage2nix}/bin/stackage2nix --resolver $resolver)
+        (set -x; time ${stackage2nix}/bin/stackage2nix --resolver $resolver)
         # update supported releases
         popd
-        echo "''${resolver//.}" >> ../supported-stackage-releases.txt
+        echo $resolver >> ../supported-stackage-releases.txt
       fi
     done
     popd # stackage
+
+    sort --version-sort -o supported-stackage-releases.txt supported-stackage-releases.txt
   '';
 
+  # update stackage/default.nix
   updateStackageSh = ''
     pushd stackage
     echo '{ callPackage }:' > default.nix
