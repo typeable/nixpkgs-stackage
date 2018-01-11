@@ -2,6 +2,7 @@
 , cacheVersion ? "0" }:
 
 {
+
   hackage-db = stdenv.mkDerivation {
     name = "hackage-db";
     version = cacheVersion;
@@ -16,6 +17,7 @@
     '';
     SSL_CERT_FILE="${cacert}/etc/ssl/certs/ca-bundle.crt";
   };
+
   all-cabal-hashes = stdenv.mkDerivation rec {
     name = "all-cabal-hashes";
     version = cacheVersion;
@@ -27,6 +29,7 @@
     '';
     SSL_CERT_FILE="${cacert}/etc/ssl/certs/ca-bundle.crt";
   };
+
   stackage-lts = stdenv.mkDerivation {
     name = "stackage-lts";
     version = cacheVersion;
@@ -38,4 +41,5 @@
     '';
     SSL_CERT_FILE="${cacert}/etc/ssl/certs/ca-bundle.crt";
   };
+
 }

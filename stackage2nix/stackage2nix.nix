@@ -10,8 +10,8 @@ mkDerivation {
   version = "0.5.0";
   src = fetchgit {
    url = "https://github.com/typeable/stackage2nix.git";
-   rev = "884ca5b6be6880f6ee7453f7d8d4df3ca1060cb1";
-   sha256 = "1gcln8gmhi2gar5zqngff5hkkmx7005qg2h2nk34457whd6kxdzg";
+   rev = "7bd086b41252e293af1b3d8a15e6b53bc63230bf";
+   sha256 = "06hyma8cxncv2l6icdaf2dwh2mxjbgds6l2z2x8kp25gq2qlqx1r";
   };
   isLibrary = true;
   isExecutable = true;
