@@ -26,8 +26,11 @@ in {
 
   stackage2nix-static = super.callPackage ./stackage2nix {
     stackage2nix =
-      let
-        staticConfigureFlags = super.lib.concatStringsSep " " [
+      (self.haskell.packages.stackage.lts-100.callPackage ./stackage2nix/stackage2nix.nix {}).overrideAttrs (attrs: {
+        enableSharedExecutables = false;
+        enableSharedLibraries = false;
+        configureFlags = [
+          "--disable-shared"
           "--ghc-option=-optl=-static"
           "--ghc-option=-optl=-pthread"
           "--ghc-option=-optl=-L${super.glibc.static}/lib"
@@ -35,12 +38,9 @@ in {
           "--ghc-option=-optl=-L${self.icu-static.static}/lib"
           "--ghc-option=-optl=-L${self.openssl-static.static}/lib"
           "--ghc-option=-optl=-L${super.zlib.static}/lib"
+          "--ghc-option=-fPIC"
         ];
-        buildStaticExecutable = drv:
-          super.haskell.lib.appendConfigureFlag (super.haskell.lib.disableSharedExecutables drv) staticConfigureFlags;
-      in
-        buildStaticExecutable
-         (self.haskell.packages.stackage.lts-100.callPackage ./stackage2nix/stackage2nix.nix{});
+      });
     cacheVersion = builtins.readFile ./cache-version.txt;
   };
 
@@ -50,7 +50,7 @@ in {
     outputs = attrs.outputs ++ [ "static" ];
     postInstall = ''
       moveToOutput "lib/*.a" "$static"
-    '' + attrs.postInstall;
+    '' + (if attrs ? postInstall then attrs.postInstall else "");
   });
 
   openssl-static = super.openssl.overrideAttrs (attrs: {
@@ -58,8 +58,8 @@ in {
     outputs = attrs.outputs ++ [ "static" ];
     postInstall = ''
       mkdir -p $static/lib;
-      moveToOutput "*.a" "$static/lib";
-    '' + attrs.postInstall;
+      cp -v *.a $static/lib;
+    '' + (if attrs ? postInstall then attrs.postInstall else "");
   });
 
 }
