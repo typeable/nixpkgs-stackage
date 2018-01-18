@@ -1,8 +1,19 @@
-{ callPackage, makeWrapper, stdenv, nix, nix-prefetch-scripts
-, stackage2nix, cacheVersion }:
+{ self
+, cacheVersion
+, drv ? null }:
 
 let
+  inherit (self) callPackage makeWrapper stdenv nix nix-prefetch-scripts;
+
+  stackage2nix = if drv == null
+    then
+      self.haskell.lib.disableSharedExecutables
+        (import ./stackage-packages.nix { nixpkgs = self; }).stackage2nix
+    else
+      drv;
+
   lib = callPackage ./lib.nix { inherit cacheVersion; };
+
 in stdenv.mkDerivation rec {
   name = "stackage2nix-${version}";
   version = stackage2nix.version;

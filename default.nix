@@ -13,20 +13,21 @@ in {
   haskell = super.haskell // {
     packages = super.haskell.packages // {
       stackage = super.callPackage ./stackage {} // {
-        lib = super.callPackage ./lib.nix { };
+        lib = super.callPackage ./lib.nix {};
       };
     };
   };
 
-  stackage2nix = super.callPackage ./stackage2nix {
-    stackage2nix = super.haskell.lib.disableSharedExecutables
-      (self.haskell.packages.stackage.lts-100.callPackage ./stackage2nix/stackage2nix.nix{});
+  stackage2nix = import ./stackage2nix {
     cacheVersion = builtins.readFile ./cache-version.txt;
+    inherit self;
   };
 
-  stackage2nix-static = super.callPackage ./stackage2nix {
-    stackage2nix =
-      (self.haskell.packages.stackage.lts-100.callPackage ./stackage2nix/stackage2nix.nix {}).overrideAttrs (attrs: {
+  stackage2nix-static = import ./stackage2nix {
+    drv =
+      let
+        stackagePackages = import ./stackage2nix/stackage-packages.nix { nixpkgs = self; };
+      in stackagePackages.stackage2nix.overrideAttrs (attrs: {
         enableSharedExecutables = false;
         enableSharedLibraries = false;
         configureFlags = [
@@ -42,6 +43,7 @@ in {
         ];
       });
     cacheVersion = builtins.readFile ./cache-version.txt;
+    inherit self;
   };
 
   icu-static = super.icu.overrideAttrs (attrs: {
