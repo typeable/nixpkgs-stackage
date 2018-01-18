@@ -1,3 +1,8 @@
+# Produces Stackage packages set with `stackage2nix` package
+# from `${stackage2nixSrc}/stack.yaml`
+#
+# nix-build ./example.nix -A stackage2nix
+
 let
   nixpkgs = import <nixpkgs> {
     overlays = [ (import ../default.nix) ];
@@ -10,4 +15,4 @@ let
     inherit nixpkgs;
   };
 in
-  stackage.stackage2nix
+  stackage

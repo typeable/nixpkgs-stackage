@@ -1,11 +1,12 @@
 # nixpkgs-stackage
 
-Nixpkgs overlay with Haskell Stackage packages
+Nixpkgs overlay adding Stackage Haskell packages at the `pkgs.haskell.packages.stackage`
 
-## Packages
+## Contents
 
-- Stackage LTS releases
-- [stackage2nix][]
+- Stackage LTS releases at `pkgs.haskell.packages.stackage`
+- [stackage2nix][] at `pkgs`
+- build utils at `pkgs.haskell.packages.stackage.lib`
 
 ## Install
 
@@ -40,7 +41,7 @@ Update script will add missing lts releases to `stackage` directory:
 
 # Examples
 
-Build derivation example for `stackage2nix` source repo.
+Build derivation for `stackage2nix` from `stackage2nix.json` source.
 
 ``` nix
 let
@@ -51,17 +52,17 @@ let
 
   stackage2nixSrc = pkgs.fetchFromGitHub (lib.importJSON ./stackage2nix.json);
 
-  stackage = nixpkgs.haskell.packages.stackage.lib.callStackage2nix "schematic" stackage2nixSrc {
+  stackage = nixpkgs.haskell.packages.stackage.lib.callStackage2nix "stackage2nix" stackage2nixSrc {
     inherit nixpkgs;
   };
 in
-  stackage.stackage2nix
+  stackage
 ```
 
 Build:
 
 ```
-nix-bulid example.nix
+nix-bulid example.nix -A stackage2nix
 ```
 
 See [examples](./examples) directory for more

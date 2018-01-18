@@ -1,3 +1,5 @@
+# Stackage packages with Nixpkgs pinned to specific revision
+
 let
   nixpkgs = import ./nixpkgs-pinned.nix {};
   inherit (nixpkgs) pkgs lib haskell;
@@ -11,4 +13,4 @@ let
     };
   };
 in
-  stackage.stackage2nix
+  stackage

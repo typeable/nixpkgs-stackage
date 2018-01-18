@@ -1,3 +1,5 @@
+# Stackage packages accept `overrides` like Nixpkgs `haskellPackages`
+
 let
   _pkgs = import <nixpkgs> {};
   _stackageOverlay = _pkgs.fetchFromGitHub (_pkgs.lib.importJSON ./nixpkgs-stackage.json);
@@ -15,4 +17,4 @@ let
     };
   };
 in
-  stackage.stackage2nix
+  stackage
