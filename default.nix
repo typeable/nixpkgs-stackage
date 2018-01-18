@@ -9,11 +9,15 @@ let
      else if configureFlags == null      then []
      else                                     configureFlags);
 
+  bootstrapPackages = import ./stackage2nix/stackage-packages.nix { nixpkgs = self; };
+
 in {
   haskell = super.haskell // {
     packages = super.haskell.packages // {
       stackage = super.callPackage ./stackage {} // {
-        lib = super.callPackage ./lib.nix {};
+        lib = super.callPackage ./lib.nix {
+          inherit (bootstrapPackages) stackage2nix;
+        };
       };
     };
   };
@@ -25,9 +29,7 @@ in {
 
   stackage2nix-static = import ./stackage2nix {
     drv =
-      let
-        stackagePackages = import ./stackage2nix/stackage-packages.nix { nixpkgs = self; };
-      in stackagePackages.stackage2nix.overrideAttrs (attrs: {
+      bootstrapPackages.stackage2nix.overrideAttrs (attrs: {
         enableSharedExecutables = false;
         enableSharedLibraries = false;
         configureFlags = [
