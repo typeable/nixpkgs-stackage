@@ -62,7 +62,7 @@ in
 Build:
 
 ```
-nix-bulid example.nix -A stackage2nix
+nix-build example.nix -A stackage2nix
 ```
 
 See [examples](./examples) directory for more
