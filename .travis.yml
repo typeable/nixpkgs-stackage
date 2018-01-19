@@ -2,7 +2,7 @@ language: nix
 
 install:
   - mkdir -p ~/.config/nixpkgs/overlays
-  - ln -s "$(pwd)/haskell-overlay.nix" ~/.config/nixpkgs/overlays/stackage-overlay.nix
+  - ln -s "$(pwd)/default.nix" ~/.config/nixpkgs/overlays/stackage-overlay.nix
 script:
-  - nix-env -i stackage2nix
-  - stackage2nix --version
+  - nix-env -i stackage2nix --dry-run
+  - nix-build nixpkgs.nix -A stackage2nix --dry-run
