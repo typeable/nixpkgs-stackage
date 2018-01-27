@@ -27,19 +27,16 @@ in {
     drv =
       let
         stackagePackages = import ./stackage2nix/stackage-packages.nix { nixpkgs = self; };
-      in stackagePackages.stackage2nix.overrideAttrs (attrs: {
+      in self.haskell.lib.overrideCabal stackagePackages.stackage2nix (drv: {
         enableSharedExecutables = false;
         enableSharedLibraries = false;
         configureFlags = [
-          "--disable-shared"
           "--ghc-option=-optl=-static"
-          "--ghc-option=-optl=-pthread"
-          "--ghc-option=-optl=-L${super.glibc.static}/lib"
-          "--ghc-option=-optl=-L${super.gmp5.static}/lib"
+          "--ghc-option=-optl=-L${self.glibc.static}/lib"
+          "--ghc-option=-optl=-L${self.gmp.override { withStatic = true; }}/lib"
           "--ghc-option=-optl=-L${self.icu-static.static}/lib"
           "--ghc-option=-optl=-L${self.openssl-static.static}/lib"
-          "--ghc-option=-optl=-L${super.zlib.static}/lib"
-          "--ghc-option=-fPIC"
+          "--ghc-option=-optl=-L${self.zlib.static}/lib"
         ];
       });
     cacheVersion = builtins.readFile ./cache-version.txt;
