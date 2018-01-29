@@ -2,7 +2,7 @@
 , cacheVersion ? "0" }:
 
 with nixpkgs; let
-  lib = haskell.packages.stackage.lib.override { inherit cacheVersion; };
+  lib = callPackage ./stackage2nix/lib.nix { inherit cacheVersion; };
 in stdenv.mkDerivation rec {
   name = "nixpkgs-typeable-update-script";
 
