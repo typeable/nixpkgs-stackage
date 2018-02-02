@@ -7,6 +7,6 @@
 # - generates new stackage releases in `stackage` directory
 # - updates `stackage/default.nix` index
 
-DATE=$(date --iso-8601)
+DATE=$(date "+%Y-%m-%d")
 echo $DATE > cache-version.txt
 exec nix-shell update.nix --argstr cacheVersion "$DATE"
