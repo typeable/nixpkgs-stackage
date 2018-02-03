@@ -3,6 +3,15 @@ language: nix
 install:
   - mkdir -p ~/.config/nixpkgs/overlays
   - ln -s "$(pwd)/default.nix" ~/.config/nixpkgs/overlays/stackage-overlay.nix
+
 script:
-  - nix-env -i stackage2nix --dry-run
   - nix-build nixpkgs.nix -A stackage2nix --dry-run
+
+jobs:
+  include:
+    - env: NIXPKGS=pinned
+    - env: NIXPKGS=unstable
+      before_script: nix-env -i stackage2nix --dry-run
+  allow_failures:
+    - env: NIXPKGS=unstable
+
