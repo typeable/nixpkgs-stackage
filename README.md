@@ -1,5 +1,7 @@
 # nixpkgs-stackage
 
+[![Build Status](https://travis-ci.org/typeable/nixpkgs-stackage.svg?branch=master)](https://travis-ci.org/typeable/nixpkgs-stackage)
+
 Nixpkgs overlay adding Stackage Haskell packages at the `pkgs.haskell.packages.stackage`
 
 ## Contents
