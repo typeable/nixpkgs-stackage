@@ -203,4 +203,7 @@
   lts-102 = callPackage ./lts-10.2 {};
   lts-103 = callPackage ./lts-10.3 {};
   lts-104 = callPackage ./lts-10.4 {};
+  lts-105 = callPackage ./lts-10.5 {};
+  lts-106 = callPackage ./lts-10.6 {};
+  lts-107 = callPackage ./lts-10.7 {};
 }
