@@ -19,7 +19,7 @@ let
   compilerConfig = import  ./configuration-packages.nix { inherit pkgs haskellLib; };
   
   configurationCommon = if builtins.pathExists ./configuration-common.nix then import ./configuration-common.nix { inherit pkgs haskellLib; } else self: super: {};
-  configurationNix = import <nixpkgs/pkgs/development/haskell-modules/configuration-nix.nix> { inherit pkgs haskellLib; };
+  configurationNix = import (pkgs.path + "/pkgs/development/haskell-modules/configuration-nix.nix") { inherit pkgs haskellLib; };
   
   extensible-self = makeExtensible (extends overrides (extends configurationCommon (extends packageSetConfig (extends compilerConfig (extends configurationNix haskellPackages)))));
 

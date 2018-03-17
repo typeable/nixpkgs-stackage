@@ -1,11 +1,13 @@
 { supportedSystems ? [ "x86_64-linux" "i686-linux" ]
 , supportedReleases ? null
-, inHydra ? true }:
+, inHydra ? true
+, pkgs ? import <nixpkgs> {}
+}:
 
 let
-  lib = (import <nixpkgs> {}).lib;
+  inherit (pkgs) lib;
 
-  release = import <nixpkgs/pkgs/top-level/release-lib.nix> {
+  release = import (pkgs.path + "/pkgs/top-level/release-lib.nix") {
     inherit supportedSystems;
     nixpkgsArgs = { overlays = [ (import ./default.nix) ]; };
   };
