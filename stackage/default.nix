@@ -17,10 +17,7 @@
   lts-18 = callPackage ./lts-1.8 {};
   lts-19 = callPackage ./lts-1.9 {};
   # TODO: (#20)
-  # This conflicts with lts-11.0
-  # Nix doesn't allow dots in the attribute keys.
-  # Removing the dots leads to ambiguites in our case.
-  # lts-110 = callPackage ./lts-1.10 {};
+  #lts-110 = callPackage ./lts-1.10 {};
   #lts-111 = callPackage ./lts-1.11 {};
   #lts-112 = callPackage ./lts-1.12 {};
   #lts-113 = callPackage ./lts-1.13 {};
@@ -217,4 +214,7 @@
   lts-111 = callPackage ./lts-11.1 {};
   lts-112 = callPackage ./lts-11.2 {};
   lts-113 = callPackage ./lts-11.3 {};
+  lts-114 = callPackage ./lts-11.4 {};
+  lts-115 = callPackage ./lts-11.5 {};
+  lts-116 = callPackage ./lts-11.6 {};
 }
