@@ -217,4 +217,10 @@
   lts-114 = callPackage ./lts-11.4 {};
   lts-115 = callPackage ./lts-11.5 {};
   lts-116 = callPackage ./lts-11.6 {};
+  lts-117 = callPackage ./lts-11.7 {};
+  lts-118 = callPackage ./lts-11.8 {};
+  lts-119 = callPackage ./lts-11.9 {};
+  lts-1110 = callPackage ./lts-11.10 {};
+  lts-1111 = callPackage ./lts-11.11 {};
+  lts-1112 = callPackage ./lts-11.12 {};
 }
