@@ -1,20 +1,30 @@
-{ self
-, cacheVersion
-, drv ? null }:
+{ nixpkgs ? import <nixpkgs> {}
+, stackage-nightly ? null
+, stackage-lts
+, all-cabal-hashes
+, hackage-db
+}:
 
 let
-  inherit (self) callPackage makeWrapper stdenv nix nix-prefetch-scripts;
+  inherit (nixpkgs) pkgs stdenv makeWrapper runCommand;
 
-  stackage2nix = if drv == null
-    then
-      self.haskell.lib.disableSharedExecutables
-        (import ./stackage-packages.nix { nixpkgs = self; }).stackage2nix
-    else
-      drv;
+  stackagePackages = import ./stackage-packages.nix { inherit nixpkgs; };
+  stackage2nix = pkgs.haskell.lib.disableSharedExecutables stackagePackages.stackage2nix;
 
-  lib = callPackage ./lib.nix { inherit cacheVersion; };
-
-in stdenv.mkDerivation rec {
+  stackageAll = runCommand "stackage-all" { }
+  ''
+    mkdir $out
+    for file in ${stackage-lts}/*.yaml
+    do
+      ln -s $file $out
+    done
+  '' + stdenv.lib.optionalString (stackage-nightly != null) ''
+    for file in ${stackage-nightly}/*.yaml
+    do
+      ln -s $file $out
+    done
+  '';
+in pkgs.stdenv.mkDerivation rec {
   name = "stackage2nix-${version}";
   version = stackage2nix.version;
   phases = [ "installPhase" "fixupPhase" ];
@@ -23,10 +33,10 @@ in stdenv.mkDerivation rec {
   installPhase = ''
     mkdir -p $out/bin
     makeWrapper ${stackage2nix}/bin/stackage2nix $out/bin/stackage2nix \
-      --add-flags "--all-cabal-hashes ${lib.all-cabal-hashes}" \
-      --add-flags "--lts-haskell ${lib.stackage-lts}" \
-      --add-flags "--hackage-db ${lib.hackage-db}/01-index.tar" \
-      --prefix PATH ":" "${nix}/bin" \
-      --prefix PATH ":" "${nix-prefetch-scripts}/bin"
+      --add-flags "--all-cabal-hashes ${all-cabal-hashes}" \
+      --add-flags "--lts-haskell ${stackageAll}" \
+      --add-flags "--hackage-db ${hackage-db}" \
+      --prefix PATH ":" "${pkgs.nix}/bin" \
+      --prefix PATH ":" "${pkgs.nix-prefetch-scripts}/bin"
   '';
 }

@@ -18,12 +18,12 @@ in {
     };
   };
 
-  stackage2nix = import ./stackage2nix {
+  stackage2nix = import ./stackage2nix/impure.nix {
     cacheVersion = builtins.readFile ./cache-version.txt;
     inherit self;
   };
 
-  stackage2nix-static = import ./stackage2nix {
+  stackage2nix-static = import ./stackage2nix/impure.nix {
     drv =
       let
         stackagePackages = import ./stackage2nix/stackage-packages.nix { nixpkgs = self; };
