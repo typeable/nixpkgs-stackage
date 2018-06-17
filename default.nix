@@ -9,6 +9,8 @@ let
      else if configureFlags == null      then []
      else                                     configureFlags);
 
+  stackage2nixPackages = import ./stackage2nix/stackage-packages.nix { nixpkgs = self; };
+
 in {
   haskell = super.haskell // {
     packages = super.haskell.packages // {
@@ -18,7 +20,9 @@ in {
     };
   };
 
-  stackage2nix = import ./stackage2nix/impure.nix {
+  stackage2nix = super.haskell.lib.disableSharedExecutables stackage2nixPackages.stackage2nix;
+
+  stackage2nixWrapper = import ./stackage2nix/impure.nix {
     cacheVersion = builtins.readFile ./cache-version.txt;
     inherit self;
   };
