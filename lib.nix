@@ -5,11 +5,9 @@ rec {
   stackage2nixGeneric = { drv, pname, installPhase, name, src }:
     stdenv.mkDerivation {
 
-      inherit installPhase;
-
       name = "${pname}-${name}";
 
-      phases = ["installPhase"];
+      phases = [ "installPhase" ];
       buildInputs = [ drv ];
       preferLocalBuild = true;
 
@@ -17,6 +15,7 @@ rec {
       LANG = "en_US.UTF-8";
       LOCALE_ARCHIVE = lib.optionalString stdenv.isLinux "${glibcLocales}/lib/locale/locale-archive";
 
+      inherit installPhase;
   };
 
   stackage2nixWrapperSrc = { name, src }: stackage2nixGeneric {
@@ -32,9 +31,22 @@ rec {
     inherit name src;
   };
 
-  stackage2nixSrc = { name, src, stackage-lts, all-cabal-hashes, hackage-db }: stackage2nixGeneric {
+  stackage2nixSrc = { name, src }: stackage2nixGeneric {
     drv = stackage2nix;
     pname = "stackage2nix";
+    installPhase = ''
+      export HOME="$TMP"
+      mkdir -p $out
+      cd $out
+      stackage2nix "${src}"
+    '';
+
+    inherit name src;
+  };
+
+  stackage2nixSrcArgs = { name, src, stackage-lts, all-cabal-hashes, hackage-db }: stackage2nixGeneric {
+    drv = stackage2nix;
+    pname = "stackage2nixArgs";
     installPhase = ''
       export HOME="$TMP"
       mkdir -p $out
@@ -45,10 +57,11 @@ rec {
     inherit name src;
   };
 
+  callStackage2nix = name: src: import (stackage2nixSrc { inherit name src; });
+
   callStackage2nixWrapper = name: src: import (stackage2nixWrapperSrc { inherit name src; });
 
-  callStackage2nix = name: src: stackage-lts: all-cabal-hashes: hackage-db: import stackage2nixSrc {
-    inherit name src stackage-lts all-cabal-hashes hackage-db;
-  };
+  callStackage2nixArgs = name: src: stackage-lts: all-cabal-hashes: hackage-db:
+    import (stackage2nixSrcArgs { inherit name src stackage-lts all-cabal-hashes hackage-db; });
 
 }
