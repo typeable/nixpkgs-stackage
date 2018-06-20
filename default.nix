@@ -20,7 +20,9 @@ in {
     };
   };
 
-  stackage2nix = super.haskell.lib.disableSharedExecutables stackage2nixPackages.stackage2nix;
+  stackage2nix = self.callPackage ./stackage2nix {
+    drv = super.haskell.lib.disableSharedExecutables stackage2nixPackages.stackage2nix;
+  };
 
   stackage2nixWrapper = import ./stackage2nix/impure.nix {
     cacheVersion = builtins.readFile ./cache-version.txt;

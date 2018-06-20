@@ -11,8 +11,6 @@ let
 
   stackage2nixSrc = pkgs.fetchFromGitHub (lib.importJSON ./stackage2nix.json);
 
-  stackage = nixpkgs.haskell.packages.stackage.lib.callStackage2nix "stackage2nix" stackage2nixSrc {
-    inherit nixpkgs;
-  };
+  stackage = nixpkgs.haskell.packages.stackage.lib.callStackage2nix "stackage2nix" stackage2nixSrc;
 in
   stackage

@@ -6,10 +6,10 @@
 
 let
   _pkgs = import <nixpkgs> {};
-  _pkgsPath = _pkgs.fetchFromGitHub (_pkgs.lib.importJSON ./nixpkgs.json);
-  _stackageOverlayPath = _pkgs.fetchFromGitHub (_pkgs.lib.importJSON ./nixpkgs-stackage.json);
+  _pkgsPath = _pkgs.fetchFromGitHub (_pkgs.lib.importJSON ../nixpkgs.json);
+  _stackageOverlayLocal = ../.;
 in
   import _pkgsPath ({
-    overlays = [ (import _stackageOverlayPath) ] ++ overlays;
+    overlays = [ (import _stackageOverlayLocal) ] ++ overlays;
     config = config // { allowUnfree = true; };
   } // (if system != null then { inherit system; } else { }))
