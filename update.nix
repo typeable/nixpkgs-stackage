@@ -21,7 +21,7 @@ in stdenv.mkDerivation rec {
         mkdir $resolver
         pushd $resolver
         # generate stackage release
-        (set -x; time ${stackage2nix}/bin/stackage2nix --resolver $resolver)
+        (set -x; time ${stackage2nixWrapper}/bin/stackage2nix --resolver $resolver)
         # update supported releases
         popd
         echo $resolver >> ../supported-stackage-releases.txt
