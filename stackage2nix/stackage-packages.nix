@@ -54,11 +54,11 @@ let
          }:
          mkDerivation {
            pname = "stackage2nix";
-           version = "0.7.0";
+           version = "0.7.1";
            src = pkgs.fetchgit {
              url = "https://github.com/typeable/stackage2nix.git";
-             rev = "c40a8f0c3a8982d7dc74a84d065fd7b60f63e762";
-             sha256 = "10ppr0kfkrm2zl1rixnd0495xhbpagiw79hvxxawkk0nmnskxxjk";
+             rev = "8d6e70044a4bafa0f8d5bdc011ac00634549a13b";
+             sha256 = "1lcs8ii0nqlyg1lj50zjabw8z4crkk59dpfyykpxraa9whkklg4d";
            };
            isLibrary = true;
            isExecutable = true;
