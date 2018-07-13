@@ -4,13 +4,7 @@
 
 Nixpkgs overlay adding Stackage Haskell packages at the `pkgs.haskell.packages.stackage`
 
-## Contents
-
-- Stackage LTS releases at `pkgs.haskell.packages.stackage`
-- [stackage2nix][] at `pkgs`
-- build utils at `pkgs.haskell.packages.stackage.lib`
-
-## Install
+# Install
 
 Symlink the current `./default.nix` into the `~/.config/nixpkgs/overlays` folder.
 
@@ -18,6 +12,12 @@ Symlink the current `./default.nix` into the `~/.config/nixpkgs/overlays` folder
 cd ~/.config/nixpkgs/overlays
 ln -s /path/to/default.nix stackage-overlay.nix
 ```
+
+## Contents
+
+- Stackage LTS releases at `pkgs.haskell.packages.stackage`
+- [stackage2nix][] at `pkgs`
+- build utils at `pkgs.haskell.packages.stackage.lib`
 
 ## Haskell overlay
 
