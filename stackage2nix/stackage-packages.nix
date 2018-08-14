@@ -65,7 +65,7 @@ let
          , base, blaze-html, bytestring, Cabal, classy-prelude-conduit
          , conduit, conduit-extra, containers, cryptonite
          , cryptonite-conduit, data-default-class, directory, exceptions
-         , fetchgit, filepath, hashable, html-conduit, http-client
+         , fetchgit, filepath, hashable, hpack, html-conduit, http-client
          , http-client-tls, http-conduit, lucid, memory, mime-types
          , mono-traversable, mtl, old-locale, optparse-applicative
          , optparse-simple, process, resourcet, safe, semigroups, stm, store
@@ -106,6 +106,8 @@ let
              unix-compat unordered-containers utf8-string vector xml-conduit
              xml-types yaml zlib
            ];
+           buildTools = [ hpack ];
+           preConfigure = "hpack";
            doHaddock = false;
            doCheck = false;
            homepage = "https://github.com/fpco/stackage-curator#readme";
