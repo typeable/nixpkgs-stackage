@@ -24,6 +24,7 @@ with haskellLib; self: super: {
   "template-haskell" = null;
   "terminfo" = null;
   "time" = null;
+  "text" = null;
   "transformers" = null;
   "unix" = null;
   # break cycle: HUnit call-stack nanospec hspec hspec-core clock tasty async hashable test-framework-hunit wcwidth attoparsec scientific tasty-ant-xml generic-deriving hspec-discover hspec-meta hspec-expectations quickcheck-io tasty-hunit tasty-quickcheck tasty-smallcheck silently temporary exceptions stringbuilder
