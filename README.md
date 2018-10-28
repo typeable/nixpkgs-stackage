@@ -24,7 +24,7 @@ ln -s /path/to/default.nix stackage-overlay.nix
 List LTS packages:
 
 ```
-nix-env -f '<nixpkgs>' -qaP -A haskell.packages.stackage.lts-100
+nix-env -f '<nixpkgs>' -qaP -A haskell.packages.stackage.lts_10_0
 ```
 
 Install stackage2nix:

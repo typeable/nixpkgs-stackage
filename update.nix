@@ -39,7 +39,7 @@ in stdenv.mkDerivation rec {
     echo '{' >> default.nix
     for dir in $(find . -mindepth 1 -type d | sort --version-sort); do
       resolver=$(basename $dir)
-      echo "  ''${resolver//.} = callPackage $dir {};" >> default.nix
+      echo "  ''${resolver//[-.]/_} = callPackage $dir {};" >> default.nix
     done
     echo '}' >> default.nix
     popd

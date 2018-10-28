@@ -170,6 +170,6 @@ let
            license = stdenv.lib.licenses.mit;
          }) {};
     };
-in nixpkgs.haskell.packages.stackage.lts-122.override {
+in nixpkgs.haskell.packages.stackage.lts_12_2.override {
   packageSetConfig = self: super: stackPackages { inherit (nixpkgs) pkgs stdenv; inherit (self) callPackage; } super;
 }
