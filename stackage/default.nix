@@ -229,9 +229,22 @@
   lts_11_17 = callPackage ./lts-11.17 {};
   lts_11_18 = callPackage ./lts-11.18 {};
   lts_11_19 = callPackage ./lts-11.19 {};
+  lts_11_20 = callPackage ./lts-11.20 {};
+  lts_11_21 = callPackage ./lts-11.21 {};
+  lts_11_22 = callPackage ./lts-11.22 {};
   lts_12_0 = callPackage ./lts-12.0 {};
   lts_12_1 = callPackage ./lts-12.1 {};
   lts_12_2 = callPackage ./lts-12.2 {};
   lts_12_3 = callPackage ./lts-12.3 {};
   lts_12_4 = callPackage ./lts-12.4 {};
+  lts_12_5 = callPackage ./lts-12.5 {};
+  lts_12_6 = callPackage ./lts-12.6 {};
+  lts_12_7 = callPackage ./lts-12.7 {};
+  lts_12_8 = callPackage ./lts-12.8 {};
+  lts_12_9 = callPackage ./lts-12.9 {};
+  lts_12_10 = callPackage ./lts-12.10 {};
+  lts_12_11 = callPackage ./lts-12.11 {};
+  lts_12_12 = callPackage ./lts-12.12 {};
+  lts_12_13 = callPackage ./lts-12.13 {};
+  lts_12_14 = callPackage ./lts-12.14 {};
 }
