@@ -21,9 +21,17 @@ in stdenv.mkDerivation rec {
         mkdir $resolver
         pushd $resolver
         # generate stackage release
-        (set -x; time ${stackage2nixWrapper}/bin/stackage2nix --resolver $resolver)
-        # update supported releases
+        CMD="${stackage2nixWrapper}/bin/stackage2nix --resolver $resolver"
+        echo "$CMD"
+        time $CMD
+        EXIT_CODE=$?
         popd
+        if [[ $EXIT_CODE -ne 0 ]]; then
+          echo "ERROR: Unable to update $resolver" >&2
+          rm -rf "$resolver"
+          exit $EXIT_CODE
+        fi
+        # update supported releases
         echo $resolver >> ../supported-stackage-releases.txt
       fi
     done
