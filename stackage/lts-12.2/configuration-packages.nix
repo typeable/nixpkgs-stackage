@@ -21,6 +21,7 @@ with haskellLib; self: super: {
   "pretty" = null;
   "process" = null;
   "rts" = null;
+  "stm" = null;
   "template-haskell" = null;
   "terminfo" = null;
   "time" = null;

@@ -16,13 +16,12 @@
   lts-17 = callPackage ./lts-1.7 {};
   lts-18 = callPackage ./lts-1.8 {};
   lts-19 = callPackage ./lts-1.9 {};
-  #TODO(20)
-  #lts-110 = callPackage ./lts-1.10 {};
-  #lts-111 = callPackage ./lts-1.11 {};
-  #lts-112 = callPackage ./lts-1.12 {};
-  #lts-113 = callPackage ./lts-1.13 {};
-  #lts-114 = callPackage ./lts-1.14 {};
-  #lts-115 = callPackage ./lts-1.15 {};
+  lts-110 = callPackage ./lts-1.10 {};
+  lts-111 = callPackage ./lts-1.11 {};
+  lts-112 = callPackage ./lts-1.12 {};
+  lts-113 = callPackage ./lts-1.13 {};
+  lts-114 = callPackage ./lts-1.14 {};
+  lts-115 = callPackage ./lts-1.15 {};
   lts-20 = callPackage ./lts-2.0 {};
   lts-21 = callPackage ./lts-2.1 {};
   lts-22 = callPackage ./lts-2.2 {};
@@ -209,8 +208,8 @@
   lts-107 = callPackage ./lts-10.7 {};
   lts-108 = callPackage ./lts-10.8 {};
   lts-109 = callPackage ./lts-10.9 {};
-  lts-110 = callPackage ./lts-11.0 {};
   lts-1010 = callPackage ./lts-10.10 {};
+  lts-110 = callPackage ./lts-11.0 {};
   lts-111 = callPackage ./lts-11.1 {};
   lts-112 = callPackage ./lts-11.2 {};
   lts-113 = callPackage ./lts-11.3 {};
@@ -230,9 +229,25 @@
   lts-1117 = callPackage ./lts-11.17 {};
   lts-1118 = callPackage ./lts-11.18 {};
   lts-1119 = callPackage ./lts-11.19 {};
+  lts-1120 = callPackage ./lts-11.20 {};
+  lts-1121 = callPackage ./lts-11.21 {};
+  lts-1122 = callPackage ./lts-11.22 {};
   lts-120 = callPackage ./lts-12.0 {};
   lts-121 = callPackage ./lts-12.1 {};
   lts-122 = callPackage ./lts-12.2 {};
   lts-123 = callPackage ./lts-12.3 {};
   lts-124 = callPackage ./lts-12.4 {};
+  lts-125 = callPackage ./lts-12.5 {};
+  lts-126 = callPackage ./lts-12.6 {};
+  lts-127 = callPackage ./lts-12.7 {};
+  lts-128 = callPackage ./lts-12.8 {};
+  lts-129 = callPackage ./lts-12.9 {};
+  lts-1210 = callPackage ./lts-12.10 {};
+  lts-1211 = callPackage ./lts-12.11 {};
+  lts-1212 = callPackage ./lts-12.12 {};
+  lts-1213 = callPackage ./lts-12.13 {};
+  lts-1214 = callPackage ./lts-12.14 {};
+  lts-1215 = callPackage ./lts-12.15 {};
+  lts-1216 = callPackage ./lts-12.16 {};
+  lts-1217 = callPackage ./lts-12.17 {};
 }

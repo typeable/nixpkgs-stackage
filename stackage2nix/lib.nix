@@ -7,13 +7,10 @@
     name = "hackage-db";
     version = cacheVersion;
     phases = [ "installPhase" ];
-    buildInputs = [ curl ];
+    src = builtins.fetchTarball https://hackage.haskell.org/01-index.tar.gz;
     installPhase = ''
       mkdir -p $out
-      pushd $out
-      curl -o 01-index.tar.gz https://hackage.haskell.org/01-index.tar.gz
-      gunzip --keep 01-index.tar.gz
-      popd
+      cp -r $src $out
     '';
     SSL_CERT_FILE="${cacert}/etc/ssl/certs/ca-bundle.crt";
   };
@@ -22,10 +19,13 @@
     name = "all-cabal-hashes";
     version = cacheVersion;
     phases = [ "installPhase" ];
-    buildInputs = [ git ];
+    src = builtins.fetchGit {
+      url = https://github.com/commercialhaskell/all-cabal-hashes.git;
+      ref = "hackage";
+    };
     installPhase = ''
       mkdir -p $out
-      git clone --branch hackage https://github.com/commercialhaskell/all-cabal-hashes.git $out
+      cp -r $src $out
     '';
     SSL_CERT_FILE="${cacert}/etc/ssl/certs/ca-bundle.crt";
   };
@@ -34,10 +34,13 @@
     name = "stackage-lts";
     version = cacheVersion;
     phases = [ "installPhase" ];
-    buildInputs = [ git ];
+    src = builtins.fetchGit {
+      url = https://github.com/fpco/lts-haskell.git;
+      ref = "master";
+    };
     installPhase = ''
       mkdir -p $out
-      git clone --depth 1 https://github.com/fpco/lts-haskell.git $out
+      cp -r $src $out
     '';
     SSL_CERT_FILE="${cacert}/etc/ssl/certs/ca-bundle.crt";
   };
