@@ -10,8 +10,8 @@ let
   inherit (haskellLib) makePackageSet;
   
   haskellPackages = pkgs.callPackage makePackageSet {
-                      ghc = buildPackages.haskell.compiler.ghc843;
-                      buildHaskellPackages = buildPackages.haskell.packages.ghc843;
+                      ghc = buildPackages.haskell.compiler.ghc844;
+                      buildHaskellPackages = buildPackages.haskell.packages.ghc844;
                       package-set = import ./packages.nix;
                       inherit stdenv haskellLib extensible-self;
                     };
