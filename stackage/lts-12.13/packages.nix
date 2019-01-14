@@ -4100,6 +4100,7 @@ self: {
        sha256 = "0303bqlbf8abixcq3x3px2ijj01c9hlqadkv8rhls6f64a8h8cwb";
        revision = "3";
        editedCabalFile = "1s0jm2y0jhfrj7af80csckiizkfq5h0v4zb92mkwh1pkfi763fha";
+       configureFlags = [ "-f-llvm" ];
        libraryHaskellDepends = [
          array base containers exact-pi ghc-prim integer-gmp
          integer-logarithms mtl random vector
@@ -9689,6 +9690,7 @@ self: {
        pname = "darcs";
        version = "2.14.1";
        sha256 = "0dfd6bp2wy0aabxx7l93gi3dmq21j970cds424xdy1mgmjcvrpb1";
+       configureFlags = [ "-fforce-char8-encoding" "-flibrary" ];
        isLibrary = true;
        isExecutable = true;
        setupHaskellDepends = [ base Cabal directory filepath process ];
@@ -10690,9 +10692,11 @@ self: {
        license = stdenv.lib.licenses.bsd3;
      }) {};
   "diagrams-builder" = callPackage
-    ({ mkDerivation, base, base-orphans, cmdargs, diagrams-lib
-     , directory, exceptions, filepath, hashable, haskell-src-exts
-     , haskell-src-exts-simple, hint, lens, mtl, split, transformers
+    ({ mkDerivation, base, base-orphans, bytestring, cmdargs
+     , diagrams-cairo, diagrams-lib, diagrams-postscript
+     , diagrams-rasterific, diagrams-svg, directory, exceptions
+     , filepath, hashable, haskell-src-exts, haskell-src-exts-simple
+     , hint, JuicyPixels, lens, mtl, split, svg-builder, transformers
      }:
      mkDerivation {
        pname = "diagrams-builder";
@@ -10700,12 +10704,18 @@ self: {
        sha256 = "1g8anclzfm88nd6z539g5f2h6yfb538hdl59sbiqv0vk1c4sr01s";
        revision = "1";
        editedCabalFile = "0cdnriavw7y0cr12n60vd0hwcyi09vkx5zjr47af3bj00lq1v9hk";
+       configureFlags = [ "-fcairo" "-fps" "-frasterific" "-fsvg" ];
        isLibrary = true;
        isExecutable = true;
        libraryHaskellDepends = [
          base base-orphans cmdargs diagrams-lib directory exceptions
          filepath hashable haskell-src-exts haskell-src-exts-simple hint
          lens mtl split transformers
+       ];
+       executableHaskellDepends = [
+         base bytestring cmdargs diagrams-cairo diagrams-lib
+         diagrams-postscript diagrams-rasterific diagrams-svg directory
+         filepath JuicyPixels lens svg-builder
        ];
        homepage = "http://projects.haskell.org/diagrams";
        description = "hint-based build service for the diagrams graphics EDSL";
@@ -13485,14 +13495,15 @@ self: {
   "folds" = callPackage
     ({ mkDerivation, adjunctions, base, bifunctors, bytestring, Cabal
      , cabal-doctest, comonad, constraints, contravariant, data-reify
-     , deepseq, directory, distributive, doctest, filepath, hlint, lens
-     , mtl, pointed, profunctors, reflection, semigroupoids, semigroups
+     , deepseq, directory, distributive, doctest, filepath, lens, mtl
+     , pointed, profunctors, reflection, semigroupoids, semigroups
      , transformers, unordered-containers, vector
      }:
      mkDerivation {
        pname = "folds";
        version = "0.7.4";
        sha256 = "0wj5fd3icj05w3lziv4rmqahsh42kzckxybjacyvwb45kiy6yvjw";
+       configureFlags = [ "-f-test-hlint" ];
        setupHaskellDepends = [ base Cabal cabal-doctest ];
        libraryHaskellDepends = [
          adjunctions base bifunctors comonad constraints contravariant
@@ -13500,8 +13511,7 @@ self: {
          semigroupoids transformers unordered-containers vector
        ];
        testHaskellDepends = [
-         base bytestring deepseq directory doctest filepath hlint mtl
-         semigroups
+         base bytestring deepseq directory doctest filepath mtl semigroups
        ];
        doCheck = false;
        homepage = "http://github.com/ekmett/folds";
@@ -16123,6 +16133,7 @@ self: {
        pname = "haskeline";
        version = "0.7.4.3";
        sha256 = "0ydnsr1nhh7mfgvbpclidcfbgzf7j8g5vnwxrnkmgg1dphq0jv84";
+       configureFlags = [ "-fterminfo" ];
        libraryHaskellDepends = [
          base bytestring containers directory filepath process stm terminfo
          transformers unix
@@ -17051,17 +17062,19 @@ self: {
        license = stdenv.lib.licenses.bsd3;
      }) {};
   "highlighting-kate" = callPackage
-    ({ mkDerivation, base, blaze-html, containers, Diff, directory
-     , filepath, mtl, parsec, process, regex-pcre-builtin, utf8-string
+    ({ mkDerivation, base, blaze-html, bytestring, containers, Diff
+     , directory, filepath, mtl, parsec, pcre-light, process
+     , utf8-string
      }:
      mkDerivation {
        pname = "highlighting-kate";
        version = "0.6.4";
        sha256 = "1bqv00gfmrsf0jjr4qf3lhshvfkyzmhbi3pjb6mafbnsyn2k7f6q";
+       configureFlags = [ "-fpcre-light" ];
        isLibrary = true;
        isExecutable = true;
        libraryHaskellDepends = [
-         base blaze-html containers mtl parsec regex-pcre-builtin
+         base blaze-html bytestring containers mtl parsec pcre-light
          utf8-string
        ];
        testHaskellDepends = [
@@ -17348,6 +17361,7 @@ self: {
        pname = "hlibsass";
        version = "0.1.7.0";
        sha256 = "0vcz3hndksfp9rmz07y67rvqinaz7cxzvrhjcwy30wc79m25r9v2";
+       configureFlags = [ "-fexternalLibsass" ];
        setupHaskellDepends = [ base Cabal directory ];
        libraryHaskellDepends = [ base ];
        librarySystemDepends = [ libsass ];
@@ -17382,8 +17396,9 @@ self: {
        license = stdenv.lib.licenses.bsd3;
      }) {};
   "hmatrix" = callPackage
-    ({ mkDerivation, array, base, binary, blas, bytestring, deepseq
-     , liblapack, random, semigroups, split, storable-complex, vector
+    ({ mkDerivation, array, base, binary, bytestring, deepseq
+     , openblasCompat, random, semigroups, split, storable-complex
+     , vector
      }:
      mkDerivation {
        pname = "hmatrix";
@@ -17391,15 +17406,16 @@ self: {
        sha256 = "10jd69nby29dggghcyjk6ykyr5wrn97nrv1dkpyrp0y5xm12xssj";
        revision = "1";
        editedCabalFile = "0krx0ds5mcj28y6zpg0r50lljn8681wi4c5lqcdz2c71nhixfq8h";
+       configureFlags = [ "-fdisable-default-paths" "-fopenblas" ];
        libraryHaskellDepends = [
          array base binary bytestring deepseq random semigroups split
          storable-complex vector
        ];
-       librarySystemDepends = [ blas liblapack ];
+       librarySystemDepends = [ openblasCompat ];
        homepage = "https://github.com/albertoruiz/hmatrix";
        description = "Numeric Linear Algebra";
        license = stdenv.lib.licenses.bsd3;
-     }) {inherit (pkgs) blas; inherit (pkgs) liblapack;};
+     }) {inherit (pkgs) openblasCompat;};
   "hmatrix-backprop" = callPackage
     ({ mkDerivation, backprop, base, finite-typelits
      , ghc-typelits-knownnat, ghc-typelits-natnormalise, hedgehog
@@ -18081,6 +18097,7 @@ self: {
        pname = "hslua";
        version = "0.9.5.2";
        sha256 = "1rdvv01p214zfjh6fcqjjgqwi8y42wad6cqzhlcv5gvclzw2ck8f";
+       configureFlags = [ "-fsystem-lua" "-f-use-pkgconfig" ];
        libraryHaskellDepends = [
          base bytestring containers exceptions fail mtl text
        ];
@@ -20314,6 +20331,7 @@ self: {
        sha256 = "12rcdg2d70644bvn838fxcjkssqj8pssnx5y657si5rijcbkgjsx";
        revision = "2";
        editedCabalFile = "1mcab95d6hm098myh9gp7sh10srigjphgvm8s9pfs7jg5hzghy14";
+       configureFlags = [ "-fNoInteractiveTests" ];
        libraryHaskellDepends = [
          attoparsec base bytestring bytestring-builder network primitive
          process text time transformers vector zlib-bindings
@@ -26336,6 +26354,7 @@ self: {
        sha256 = "1dqin92w513l7whg5wdgrngnxsj5mb8gppfvn7kjgyv2pdgpy0zy";
        revision = "1";
        editedCabalFile = "16f2c7awxbs17xycl3z1x11h7gc7rfzvw7i3pslsn9nms7rz3s3v";
+       configureFlags = [ "-fhttps" "-f-trypandoc" ];
        isLibrary = true;
        isExecutable = true;
        enableSeparateDataOutput = true;
@@ -27060,8 +27079,8 @@ self: {
   "persistent-sqlite" = callPackage
     ({ mkDerivation, aeson, base, bytestring, conduit, containers
      , hspec, microlens-th, monad-logger, old-locale, persistent
-     , persistent-template, resource-pool, resourcet, temporary, text
-     , time, transformers, unliftio-core, unordered-containers
+     , persistent-template, resource-pool, resourcet, sqlite, temporary
+     , text, time, transformers, unliftio-core, unordered-containers
      }:
      mkDerivation {
        pname = "persistent-sqlite";
@@ -27069,6 +27088,7 @@ self: {
        sha256 = "1chbmvjz46smhgnzhha3bbkhys3fys6dip1jr4v7xp1jf78zbyp6";
        revision = "1";
        editedCabalFile = "10ck5x420iq1mqy51hywbml84q3hhfgd02mscjnpsp0n2g1j3v0j";
+       configureFlags = [ "-fsystemlib" ];
        isLibrary = true;
        isExecutable = true;
        libraryHaskellDepends = [
@@ -27076,6 +27096,7 @@ self: {
          old-locale persistent resource-pool resourcet text time
          transformers unliftio-core unordered-containers
        ];
+       librarySystemDepends = [ sqlite ];
        testHaskellDepends = [
          base hspec persistent persistent-template temporary text time
          transformers
@@ -27083,7 +27104,7 @@ self: {
        homepage = "http://www.yesodweb.com/book/persistent";
        description = "Backend for the persistent library using sqlite3";
        license = stdenv.lib.licenses.mit;
-     }) {};
+     }) {inherit (pkgs) sqlite;};
   "persistent-template" = callPackage
     ({ mkDerivation, aeson, aeson-compat, base, bytestring, containers
      , ghc-prim, hspec, http-api-data, monad-control, monad-logger
@@ -32656,12 +32677,12 @@ self: {
   "snap-server" = callPackage
     ({ mkDerivation, attoparsec, base, base16-bytestring, blaze-builder
      , bytestring, bytestring-builder, case-insensitive, clock
-     , containers, criterion, deepseq, directory, filepath, http-common
-     , http-streams, HUnit, io-streams, io-streams-haproxy, lifted-base
-     , monad-control, mtl, network, old-locale, parallel, QuickCheck
-     , random, snap-core, test-framework, test-framework-hunit
-     , test-framework-quickcheck2, text, threads, time, transformers
-     , unix, unix-compat, vector
+     , containers, criterion, deepseq, directory, filepath, HsOpenSSL
+     , http-common, http-streams, HUnit, io-streams, io-streams-haproxy
+     , lifted-base, monad-control, mtl, network, old-locale
+     , openssl-streams, parallel, QuickCheck, random, snap-core
+     , test-framework, test-framework-hunit, test-framework-quickcheck2
+     , text, threads, time, transformers, unix, unix-compat, vector
      }:
      mkDerivation {
        pname = "snap-server";
@@ -32669,22 +32690,23 @@ self: {
        sha256 = "0vvw9n8xs272qdlrf3dxhnva41zh3awi7pf022rrjj75lj8a77i4";
        revision = "3";
        editedCabalFile = "0a9d3nqb5rvgm25nak68lp6yj9m6cwhbgdbg5l7ib5i2czcg7yjh";
+       configureFlags = [ "-fopenssl" ];
        isLibrary = true;
        isExecutable = true;
        libraryHaskellDepends = [
          attoparsec base blaze-builder bytestring bytestring-builder
-         case-insensitive clock containers filepath io-streams
-         io-streams-haproxy lifted-base mtl network old-locale snap-core
-         text time unix unix-compat vector
+         case-insensitive clock containers filepath HsOpenSSL io-streams
+         io-streams-haproxy lifted-base mtl network old-locale
+         openssl-streams snap-core text time unix unix-compat vector
        ];
        testHaskellDepends = [
          attoparsec base base16-bytestring blaze-builder bytestring
          bytestring-builder case-insensitive clock containers deepseq
-         directory filepath http-common http-streams HUnit io-streams
-         io-streams-haproxy lifted-base monad-control mtl network old-locale
-         parallel QuickCheck random snap-core test-framework
-         test-framework-hunit test-framework-quickcheck2 text threads time
-         transformers unix unix-compat vector
+         directory filepath HsOpenSSL http-common http-streams HUnit
+         io-streams io-streams-haproxy lifted-base monad-control mtl network
+         old-locale openssl-streams parallel QuickCheck random snap-core
+         test-framework test-framework-hunit test-framework-quickcheck2 text
+         threads time transformers unix unix-compat vector
        ];
        benchmarkHaskellDepends = [
          attoparsec base blaze-builder bytestring bytestring-builder
@@ -33207,11 +33229,11 @@ self: {
      , Cabal, conduit, conduit-extra, containers, cryptonite
      , cryptonite-conduit, deepseq, directory, echo, exceptions, extra
      , file-embed, filelock, filepath, fsnotify, generic-deriving
-     , gitrev, hackage-security, hashable, hpack, hpc, hspec
-     , http-client, http-client-tls, http-conduit, http-types, memory
-     , microlens, mintty, monad-logger, mono-traversable, mtl, mustache
+     , hackage-security, hashable, hpack, hpc, hspec, http-client
+     , http-client-tls, http-conduit, http-types, memory, microlens
+     , mintty, monad-logger, mono-traversable, mtl, mustache
      , neat-interpolation, network-uri, open-browser
-     , optparse-applicative, optparse-simple, path, path-io, persistent
+     , optparse-applicative, path, path-io, persistent
      , persistent-sqlite, persistent-template, pretty, primitive
      , process, project-template, QuickCheck, regex-applicative-text
      , resourcet, retry, rio, semigroups, smallcheck, split, stm, store
@@ -33226,6 +33248,10 @@ self: {
        sha256 = "17rjc9fz1hn56jz4bnhhm50h5x71r69jizlw6dx7kfvm57hg5i0r";
        revision = "10";
        editedCabalFile = "1985lm9m6pm9mi4h4m2nrn9v2rnnfh14slcnqgyxy6k934xqvg35";
+       configureFlags = [
+         "-fdisable-git-info" "-fhide-dependency-versions"
+         "-fsupported-build"
+       ];
        isLibrary = true;
        isExecutable = true;
        setupHaskellDepends = [ base Cabal filepath ];
@@ -33251,15 +33277,15 @@ self: {
          base64-bytestring bindings-uname bytestring Cabal conduit
          conduit-extra containers cryptonite cryptonite-conduit deepseq
          directory echo exceptions extra file-embed filelock filepath
-         fsnotify generic-deriving gitrev hackage-security hashable hpack
-         hpc http-client http-client-tls http-conduit http-types memory
+         fsnotify generic-deriving hackage-security hashable hpack hpc
+         http-client http-client-tls http-conduit http-types memory
          microlens mintty monad-logger mono-traversable mtl mustache
          neat-interpolation network-uri open-browser optparse-applicative
-         optparse-simple path path-io persistent persistent-sqlite
-         persistent-template pretty primitive process project-template
-         regex-applicative-text resourcet retry rio semigroups split stm
-         store store-core streaming-commons tar template-haskell temporary
-         text text-metrics th-reify-many time tls transformers typed-process
+         path path-io persistent persistent-sqlite persistent-template
+         pretty primitive process project-template regex-applicative-text
+         resourcet retry rio semigroups split stm store store-core
+         streaming-commons tar template-haskell temporary text text-metrics
+         th-reify-many time tls transformers typed-process
          unicode-transforms unix unix-compat unliftio unordered-containers
          vector yaml zip-archive zlib
        ];
@@ -39771,6 +39797,7 @@ self: {
        pname = "yaml";
        version = "0.8.32";
        sha256 = "0cbsyh4ilvjzq1q7pxls43k6pdqxg1l85xzibcwpbvmlvrizh86w";
+       configureFlags = [ "-f-system-libyaml" ];
        isLibrary = true;
        isExecutable = true;
        libraryHaskellDepends = [
