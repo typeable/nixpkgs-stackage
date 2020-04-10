@@ -282,4 +282,5 @@
   lts-1319 = callPackage ./lts-13.19 {};
   lts-1320 = callPackage ./lts-13.20 {};
   lts-1321 = callPackage ./lts-13.21 {};
+  lts-157 = callPackage ./lts-15.7 {};
 }
