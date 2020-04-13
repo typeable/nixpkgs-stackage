@@ -18,8 +18,8 @@ let
            version = "0.7.2";
            src = pkgs.fetchgit {
              url = "https://github.com/typeable/stackage2nix.git";
-             rev = "327867dc8384e740b72d82217ded0da5ea3b288c";
-             sha256 = "1gc9nk5x7q3xnmm8jphs12ddc7mjgsnh5dkvnfxfyhw4245jk4jm";
+             rev = "80194259a7ce6f539b2858f83b75dd5d79e4eaa3";
+             sha256 = "05qdwadfq264cm8xlzh320riv826rkh93r3msxvaij0hlbggck22";
            };
            isLibrary = true;
            isExecutable = true;
@@ -35,29 +35,6 @@ let
            doCheck = false;
            homepage = "https://github.com/typeable/stackage2nix#readme";
            description = "Convert Stack files into Nix build instructions";
-           license = stdenv.lib.licenses.bsd3;
-         }) {};
-      "yaml" = callPackage
-        ({ mkDerivation, aeson, attoparsec, base, bytestring, conduit
-         , containers, directory, filepath, resourcet, scientific
-         , semigroups, template-haskell, text, transformers
-         , unordered-containers, vector
-         }:
-         mkDerivation {
-           pname = "yaml";
-           version = "0.8.31.1";
-           sha256 = "1ba1451917e6cb1df6081e2e14c2e4dcec6969b9b25a5d72db96942c3e6d8b53";
-           isLibrary = true;
-           isExecutable = true;
-           libraryHaskellDepends = [
-             aeson attoparsec base bytestring conduit containers directory
-             filepath resourcet scientific semigroups template-haskell text
-             transformers unordered-containers vector
-           ];
-           doHaddock = false;
-           doCheck = false;
-           homepage = "http://github.com/snoyberg/yaml/";
-           description = "Support for parsing and rendering YAML documents";
            license = stdenv.lib.licenses.bsd3;
          }) {};
       "stackage-curator" = callPackage
@@ -78,8 +55,8 @@ let
            version = "0.17.0.0";
            src = fetchgit {
              url = "https://github.com/fpco/stackage-curator.git";
-             sha256 = "0hymmzn59aszqxqs5s0mba8pzrky8wpkmy7hdgaxqrhg0syc6mkw";
-             rev = "73c5ed06602990c33d3fec1711e27875f283b6bf";
+             sha256 = "001zmm8q01nin2kgdrx174pm6fkybvkhhnvvl9fkv71a6l2hcviw";
+             rev = "c25cf6959a1d1b3129b18855ddbc7974324cc422";
            };
            isLibrary = true;
            isExecutable = true;
@@ -114,6 +91,64 @@ let
            description = "Tools for curating Stackage bundles";
            license = stdenv.lib.licenses.mit;
          }) {};
+      "cabal2nix" = callPackage
+        ({ mkDerivation, aeson, ansi-wl-pprint, base, bytestring, Cabal
+        , containers, deepseq, directory, distribution-nixpkgs, fetchgit, filepath
+        , hackage-db, hopenssl, hpack, language-nix, lens, monad-par
+        , monad-par-extras, mtl, optparse-applicative, pretty, process
+        , split, tasty, tasty-golden, text, time, transformers, yaml
+        }:
+        mkDerivation {
+          pname = "cabal2nix";
+          version = "2.14.4";
+          src = fetchgit {
+            url = "https://github.com/typeable/cabal2nix.git";
+            rev = "d88a8fac1ad5766e73c0426f13eef086be022973";
+            sha256 = "0shpskvnrjihmnkp0ykqyh8a232fkpjdann0j8q37dk97dlilsc5";
+          };
+          isLibrary = true;
+          isExecutable = true;
+          libraryHaskellDepends = [
+            aeson ansi-wl-pprint base bytestring Cabal containers deepseq
+            directory distribution-nixpkgs filepath hackage-db hopenssl hpack
+            language-nix lens optparse-applicative pretty process split text
+            time transformers yaml
+          ];
+          executableHaskellDepends = [
+            aeson base bytestring Cabal containers directory
+            distribution-nixpkgs filepath hopenssl language-nix lens monad-par
+            monad-par-extras mtl optparse-applicative pretty
+          ];
+          testHaskellDepends = [
+            base Cabal containers directory filepath language-nix lens pretty
+            process tasty tasty-golden
+          ];
+          doCheck = false;
+          preCheck = ''
+            export PATH="$PWD/dist/build/cabal2nix:$PATH"
+            export HOME="$TMPDIR/home"
+          '';
+          homepage = "https://github.com/nixos/cabal2nix#readme";
+          description = "Convert Cabal files into Nix build instructions";
+          license = stdenv.lib.licenses.bsd3;
+        }) {};
+      "distribution-nixpkgs" = callPackage
+        ({ mkDerivation, aeson, base, bytestring, Cabal, containers
+        , deepseq, hspec, language-nix, lens, pretty, process, split
+        }:
+        mkDerivation {
+          pname = "distribution-nixpkgs";
+          version = "1.3.1";
+          sha256 = "1113qizh931inpim0ajfwihcvlp26n1l4bf36v0jakd34k70mm8g";
+          libraryHaskellDepends = [
+            aeson base bytestring Cabal containers deepseq language-nix lens
+            pretty process split
+          ];
+          testHaskellDepends = [ base deepseq hspec lens ];
+          homepage = "https://github.com/peti/distribution-nixpkgs#readme";
+          description = "Types and functions to manipulate the Nixpkgs distribution";
+          license = stdenv.lib.licenses.bsd3;
+        }) {};
       "gitlib" = callPackage
         ({ mkDerivation, base, base16-bytestring, bytestring, conduit
          , conduit-combinators, containers, directory, exceptions, fetchgit
@@ -126,8 +161,8 @@ let
            version = "3.1.2";
            src = fetchgit {
              url = "https://github.com/jwiegley/gitlib.git";
-             sha256 = "0rp6lnbbbf9m6fvmx7mzknrk89ly0gbqaxsfx38cn6qdy7r54xcm";
-             rev = "70c99759b8b9377f67492fe29afb32f05882409d";
+             sha256 = "1fjn9r1hdcmj7d9g1cg8f8snls3mq04673bxcckilys4v2g9sfl8";
+             rev = "6ebdab95c116ef946d1aaa1d4a69da6ac07415af";
            };
            postUnpack = "sourceRoot+=/gitlib; echo source root reset to $sourceRoot";
            libraryHaskellDepends = [
@@ -151,11 +186,11 @@ let
          }:
          mkDerivation {
            pname = "gitlib-libgit2";
-           version = "3.1.1";
+           version = "3.1.2";
            src = fetchgit {
              url = "https://github.com/jwiegley/gitlib.git";
-             sha256 = "0rp6lnbbbf9m6fvmx7mzknrk89ly0gbqaxsfx38cn6qdy7r54xcm";
-             rev = "70c99759b8b9377f67492fe29afb32f05882409d";
+             sha256 = "1fjn9r1hdcmj7d9g1cg8f8snls3mq04673bxcckilys4v2g9sfl8";
+             rev = "6ebdab95c116ef946d1aaa1d4a69da6ac07415af";
            };
            postUnpack = "sourceRoot+=/gitlib-libgit2; echo source root reset to $sourceRoot";
            libraryHaskellDepends = [
@@ -169,7 +204,23 @@ let
            description = "Libgit2 backend for gitlib";
            license = stdenv.lib.licenses.mit;
          }) {};
+         "hlibgit2" = callPackage
+           ({ mkDerivation, base, bindings-DSL, git, openssl, process, zlib }:
+              mkDerivation {
+              pname = "hlibgit2";
+              version = "0.18.0.16";
+              sha256 = "0plfzxzgph7iilwp434ndcw7pia47n96hcfa32fs7q5gz8kl17hr";
+              libraryHaskellDepends = [ base bindings-DSL zlib ];
+              librarySystemDepends = [ openssl ];
+              postUnpack = ''
+                 sed -i 's/-Wno-format//' $sourceRoot/hlibgit2.cabal
+              '';
+              testHaskellDepends = [ base process ];
+              testToolDepends = [ git ];
+              description = "Low-level bindings to libgit2";
+              license = stdenv.lib.licenses.mit;
+              }) {inherit (pkgs) git; inherit (pkgs) openssl;};
     };
-in nixpkgs.haskell.packages.stackage.lts-122.override {
+in nixpkgs.haskell.packages.stackage.lts-1321.override {
   packageSetConfig = self: super: stackPackages { inherit (nixpkgs) pkgs stdenv; inherit (self) callPackage; } super;
 }
