@@ -36,5 +36,7 @@ with haskellLib; self: super: {
   "async" = dontCheck super.async;
   "clock" = dontCheck super.clock;
   "nanospec" = dontCheck super.nanospec;
-
+  "store" = if pkgs.stdenv.isDarwin
+            then dontCheck super.store
+            else super.store;
 }
